@@ -7,7 +7,7 @@ from PIL import Image
 import io
 import argparse
 
-def scan_directory(directory, start_directory, worksheet, embed_images):
+def scan_directory(directory, start_directory, worksheet, embed_images, row_height):
     headers = ['Relative File Path', 'Filename', 'Filetype', 'Clickable URL', 'Size', 'Image']
     for col, header in enumerate(headers):
         worksheet.cell(row=1, column=col + 1, value=header)
@@ -46,7 +46,7 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
                 if img.mode == 'RGBA':
                     print(f"Converting RGBA mode image to RGB mode: {file_path}")
                     img = img.convert('RGB')
-                max_row_height = 300  
+                max_row_height = row_height
                 width, height = img.size
                 scale_factor = max_row_height / height
                 resized_img = img.resize((int(width * scale_factor), int(height * scale_factor)))
@@ -73,6 +73,7 @@ def main():
     parser.add_argument('-d', '--directory', help='Directory to scan', required=True)
     parser.add_argument('-o', '--output', help='Output filename', required=True)
     parser.add_argument('-i', '--images', action='store_true', help='Embed images')
+    parser.add_argument('-rh', '--row_height', type=int, default=300, help='Row height for embedded images (default: 300)')
     args = parser.parse_args()
 
     start_directory = args.directory
@@ -82,7 +83,7 @@ def main():
 
     workbook = Workbook()
     worksheet = workbook.active
-    scan_directory(start_directory, start_directory, worksheet, args.images)
+    scan_directory(start_directory, start_directory, worksheet, args.images, args.row_height)
     # Set font for hyperlinks
     worksheet.cell(row=1, column=4).font = Font(color="0000FF", underline="single")
     workbook.save(output_filename)
