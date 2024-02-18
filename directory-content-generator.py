@@ -7,11 +7,6 @@ from PIL import Image
 import io
 import argparse
 
-def convert_to_rgb(image):
-    if image.mode == 'P':
-        return image.convert('RGB')
-    return image
-
 def scan_directory(directory, start_directory, worksheet, embed_images):
     headers = ['Relative File Path', 'Filename', 'Filetype', 'Clickable URL', 'Size', 'Image']
     for col, header in enumerate(headers):
@@ -39,8 +34,10 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
 
             if embed_images and filetype.lower() in ['png', 'jpg', 'jpeg', 'gif', 'bmp']:
                 img = Image.open(file_path)
-                if img.mode == "P" and "transparency" in img.info:
-                    img = img.convert("RGBA")  # Convert palette-based image with transparency to RGBA mode
+                # Convert RGBA mode images to RGB mode
+                if img.mode == 'RGBA':
+                    print(f"Converting RGBA mode image to RGB mode: {file_path}")
+                    img = img.convert('RGB')
                 max_row_height = 300  
                 width, height = img.size
                 scale_factor = max_row_height / height
