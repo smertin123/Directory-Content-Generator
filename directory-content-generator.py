@@ -1,7 +1,6 @@
 import os
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image as ExcelImage
-from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font
 from PIL import Image
 import io
