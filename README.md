@@ -1,6 +1,8 @@
 # Directory Content Generator
 
-Are you tired of waiting on Windows search function to find files in subdirectories? I originally created this script so I had a quick reference for my 3D model STLs, but then modified it so it can be used for any directory on your Windows machine. It creates an XLSX file containing information about the files in the specified directory.
+Are you tired of waiting on Windows search function to find files in subdirectories? 
+
+I created this script so I had a quick reference for my 3D model STLs, then modified it to be a generic file info scraper. It creates an XLSX file containing information about all the files in the specified directory and subdirectories.
 
 ## Usage
 
