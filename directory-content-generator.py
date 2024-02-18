@@ -32,6 +32,8 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
             worksheet.cell(row=row, column=4).style = "Hyperlink"
             worksheet.cell(row=row, column=5, value=size)
 
+            print(f"Adding file to spreadsheet: {file_path}")  # Print file info being added to the spreadsheet
+
             print(f"Converting image: {file}")  # Print filename before image conversion
             
             if embed_images and filetype.lower() in ['png', 'jpg', 'jpeg', 'gif', 'bmp']:
@@ -65,7 +67,7 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
                     worksheet.row_dimensions[row].height = max_row_height
                 else:
                     print(f"Unsupported file format: {file}")
-                    
+
 def main():
     parser = argparse.ArgumentParser(description='Directory Reference Generator')
     parser.add_argument('-d', '--directory', help='Directory to scan', required=True)
