@@ -32,8 +32,14 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
             worksheet.cell(row=row, column=4).style = "Hyperlink"
             worksheet.cell(row=row, column=5, value=size)
 
+            print(f"Converting image: {file}")  # Print filename before image conversion
+            
             if embed_images and filetype.lower() in ['png', 'jpg', 'jpeg', 'gif', 'bmp']:
                 img = Image.open(file_path)
+                # Convert palette mode (mode 'P') images to RGB mode
+                if img.mode == 'P':
+                    print(f"Skipping image {file} with mode '{img.mode}' (Palette mode)")
+                    continue  # Skip saving as JPEG
                 # Convert RGBA mode images to RGB mode
                 if img.mode == 'RGBA':
                     print(f"Converting RGBA mode image to RGB mode: {file_path}")
@@ -59,7 +65,7 @@ def scan_directory(directory, start_directory, worksheet, embed_images):
                     worksheet.row_dimensions[row].height = max_row_height
                 else:
                     print(f"Unsupported file format: {file}")
-
+                    
 def main():
     parser = argparse.ArgumentParser(description='Directory Reference Generator')
     parser.add_argument('-d', '--directory', help='Directory to scan', required=True)
